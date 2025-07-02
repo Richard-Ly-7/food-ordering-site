@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+.wrapper{
+    font-family: "Roboto", sans-serif;
+    margin: auto;
+    width: 80%;
+    min-height: 100vh;
+    padding: 5rem 0rem;
+}
+
+.home-wrapper{
+    width: 80%;
+}
+
+.restaurants-wrapper{
+    width: 60%;
+}
+
+#brand{
+    font-family: "Montserrat", sans-serif;
+}
+
+.dish-container, .restaurant-container{
+    height: 200px;
+}
+
+.dish-image{
+    height: 100%;
+    width: 50%;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+}
+
+.restaurant-image{
+    height: 80%;
+    width: 35%;
+}
