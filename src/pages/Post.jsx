@@ -14,6 +14,7 @@ export default function Login(){
                 <Col xs={7} sm={7}>
                     <Form>
                         <Form.Group className="mb-5">
+                            <Form.Label>What are you posting?</Form.Label>
                             <Form.Select>
                                 <option>Dish</option>
                                 <option>Restaurant</option>

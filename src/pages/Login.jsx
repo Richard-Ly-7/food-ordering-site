@@ -13,26 +13,13 @@ export default function Login(){
                 <Col xs={7} sm={7}>
                     <Form>
                         <Form.Group className="mb-4">
-                            <Form.Label>Display Name</Form.Label>
+                            <Form.Label>Display Name or Email</Form.Label>
                             <Form.Control type="text" />
-                        </Form.Group>
-
-                        <Form.Group className="mb-4">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" />
                         </Form.Group>
 
                         <Form.Group className="mb-4">
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" />
-                        </Form.Group>
-
-                        <Form.Group className="mb-5">
-                            <Form.Label>I am a:</Form.Label>
-                            <Form.Select>
-                                <option>Buyer</option>
-                                <option>Restaurant</option>
-                            </Form.Select>
                         </Form.Group>
 
                         <div className="d-flex justify-content-center">
