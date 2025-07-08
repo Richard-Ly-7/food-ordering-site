@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 export default function Login(){
     return (
         <Container fluid="md" className="wrapper shadow-sm">
-            <p className="h1 text-center mb-5">Welcome Back!</p>
+            <p className="h2 text-center mb-5">Welcome Back!</p>
 
             <Row className="justify-content-center">
                 <Col xs={7} sm={7}>

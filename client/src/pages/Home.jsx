@@ -7,7 +7,7 @@ export default function Home(){
     return (
       <Container className="wrapper shadow-sm">
         
-        <p className="h1 text-center">Welcome to OrderDropper!</p>
+        <p className="h2 text-center">Welcome to OrderDropper!</p>
         <p className="h6 fw-light text-center mb-5">Find what you're craving.</p>
         <SearchBar />
 

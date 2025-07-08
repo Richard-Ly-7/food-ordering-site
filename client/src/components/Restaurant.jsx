@@ -9,7 +9,7 @@ export default function Restaurant({restaurant}){
                     <p className="h2 mb-0">{restaurant.name}</p>
                     <p className="h6">{restaurant.address}</p>
                 </div>
-                <p className="h6 fw-light fst-italic">{restaurant.description}</p>
+                <p className="h6 fw-light fst-italic">{restaurant.description || ""}</p>
             </div>
         </Col>
     )

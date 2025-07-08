@@ -9,7 +9,7 @@ export default function ShoppingCart(){
     return (
         <Container fluid="md" className="wrapper shadow-sm">
 
-            <p className="h1 text-center mb-5">Shopping Cart</p>
+            <p className="h2 text-center mb-5">Shopping Cart</p>
 
             <Row className="justify-content-evenly">
                 <Col xs={6} sm={6} className="mt-5">

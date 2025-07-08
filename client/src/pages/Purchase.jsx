@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 export default function Purchase(){
     return (
         <Container fluid="md" className="wrapper shadow-sm">
-            <p className="h1 text-center mb-5">Complete Your Order</p>
+            <p className="h2 text-center mb-5">Complete Your Order</p>
 
             <Row className="justify-content-center">
                 <Col xs={6} sm={6}>

@@ -7,7 +7,7 @@ export default function Restaurants () {
     return (
       <Container fluid="md" className="wrapper shadow-sm">
               
-        <p className="h1 text-center mb-5">Best Nearby Restaurants</p>
+        <p className="h2 text-center mb-5">Best Nearby Restaurants</p>
         <SearchBar />
 
         <Row className="justify-content-evenly pb-5">
