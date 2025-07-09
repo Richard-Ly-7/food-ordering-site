@@ -12,6 +12,7 @@ export default function Navbar() {
           <Nav className="ms-auto pt-1">
             <Nav.Link href="/"><p className="text-light h5">Home</p></Nav.Link>
             <Nav.Link href="/restaurants"><p className="text-light h5">Restaurants</p></Nav.Link>
+            <Nav.Link href="/register"><p className="text-light h5">Register</p></Nav.Link>
             <Nav.Link href="/login"><p className="text-light h5">Login</p></Nav.Link>
           </Nav>
         </NavigationBar.Collapse>
