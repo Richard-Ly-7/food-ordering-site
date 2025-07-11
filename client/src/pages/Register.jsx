@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Register(){
-
+export default function Register({ onAuth }){
     const [fields, setFields] = useState({
         selectValue: "Buyer",
         displayName: "",
@@ -17,8 +17,9 @@ export default function Register(){
         password: ""
     });
 
-    const changeField = (e) => {
+    const navigate = useNavigate();
 
+    const changeField = (e) => {
         setFields({
             selectValue: e.target.value,
             displayName: "",
@@ -28,16 +29,54 @@ export default function Register(){
             email: "",
             password: ""
         });
-
     }
 
+    const convertToBase64 = (e) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            setFields({...fields, base64: reader.result});
+        };
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const res = await fetch(`http://localhost:4000/api/auth/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fields.selectValue === "Buyer" ? 
+                {email: fields.email, username: fields.displayName, password: fields.password, base64: fields.base64, role: "buyer"} :
+                {email: fields.email, username: fields.restaurantName, password: fields.password, role: "restaurant"}
+            ),
+        });
+
+        if(fields.selectValue === "Restaurant"){
+            await fetch(`http://localhost:4000/restaurants`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({name: fields.restaurantName, address: fields.address, description: fields.description, base64: fields.base64, userEmail: fields.email}),
+            });
+        }
+
+        const data = await res.json();
+        if (res.ok) {
+            onAuth(data.token);
+            alert('Register successful!');
+            navigate('/');
+        } else {
+            alert(data.error);
+        }
+        
+    };
+    
     return (
         <Container fluid="md" className="wrapper shadow-sm">
             <p className="h2 text-center mb-5">Register</p>
 
             <Row className="justify-content-center">
                 <Col xs={7} sm={7}>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-5">
                             <Form.Label>I am a:</Form.Label>
                             <Form.Select onChange={changeField}>
@@ -83,6 +122,11 @@ export default function Register(){
                             <Form.Control type="password" value={fields.password} onChange={(e) => setFields({...fields, password: e.target.value})} required />
                         </Form.Group>
 
+                        <Form.Group className="mb-5">
+                            <Form.Label>Profile Picture</Form.Label>
+                            <Form.Control type="file" accept="image/jpg, image/jpeg, image/png" onChange={convertToBase64} />
+                        </Form.Group>
+
                         <div className="d-flex justify-content-center">
                             <Button variant="outline-primary" type="submit" size="lg">Register</Button>
                         </div>
@@ -94,106 +138,3 @@ export default function Register(){
     )
 }
 
-// const [fields, setFields] = useState({
-//         selectValue: "Dish",
-//         dishName: "",
-//         price: 0,
-//         restaurantName: "",
-//         address: "",
-//         description: ""
-//     });
-
-//     const changeField = (e) => {
-
-//         setFields({
-//             selectValue: e.target.value,
-//             dishName: "",
-//             price: 0,
-//             restaurantName: "",
-//             address: "",
-//             description: ""
-//         });
-
-//     }
-
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-
-//         await fetch(`http://localhost:4000/${fields.selectValue === "Dish" ? "dishes" : "restaurants"}`, {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(fields.selectValue === "Dish" ? {name: fields.dishName, price: fields.price, restaurant: "placeholder", base64: "test"} : {name: fields.restaurantName, address: fields.address, description: fields.description, base64: "test"}),
-//         });
-
-//     };
-
-//     return (
-//         <Container fluid="md" className="wrapper shadow-sm">
-
-//             <p className="h2 text-center mb-5">Post a Restaurant or Dish!</p>
-
-//             <Row className="justify-content-center">
-//                 <Col xs={7} sm={7}>
-//                     <Form onSubmit={handleSubmit}>
-//                         <Form.Group className="mb-5">
-//                             <Form.Label>What are you posting?</Form.Label>
-//                             <Form.Select onChange={changeField}>
-//                                 <option>Dish</option>
-//                                 <option>Restaurant</option>
-//                             </Form.Select>
-//                         </Form.Group>
-
-//                         {
-//                             fields.selectValue === "Dish" ?
-
-//                             <Form.Group className="mb-4">
-//                             <Form.Label>Dish Name</Form.Label>
-//                             <Form.Control type="text" value={fields.dishName} onChange={(e) => setFields({...fields, dishName: e.target.value})} required />
-//                             </Form.Group>
-
-//                             :
-
-
-
-//                         }
-                        
-//                         {
-//                             fields.selectValue === "Dish" ?
-
-//                             ""
-                            
-//                             :
-
-//                             
-
-//                         }
-
-//                         {
-//                             fields.selectValue === "Dish" ?
-
-//                             <Form.Group className="mb-4">
-//                             <Form.Label>Price</Form.Label>
-//                             <Form.Control type="number" value={fields.price} onChange={(e) => setFields({...fields, price: e.target.value})} required />
-//                             </Form.Group>
-
-//                             :
-
-//                             
-
-//                         }
-
-//                         <Form.Group className="mb-5">
-//                             <Form.Label>Upload An Image</Form.Label>
-//                             <Form.Control type="file" />
-//                         </Form.Group>
-
-//                         <div className="d-flex justify-content-center">
-//                             <Button variant="outline-primary" type="submit" size="lg">Post</Button>
-//                         </div>
-//                     </Form>
-//                 </Col>
-//             </Row>
-
-//         </Container>
-//     )
-// }

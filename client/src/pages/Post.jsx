@@ -27,7 +27,7 @@ export default function Login(){
         await fetch('http://localhost:4000/dishes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({name: fields.dishName, price: fields.price, restaurant: "placeholder", base64: "test"}),
+            body: JSON.stringify({name: fields.dishName, price: fields.price, restaurant: "placeholder", base64: fields.base64}),
         });
 
     };
