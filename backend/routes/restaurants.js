@@ -1,6 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Restaurant = require('../models/Restaurant');
+const Dish = require('../models/Dish');
 
 const router = express.Router();
 
@@ -15,16 +16,27 @@ router.use(limiter);
 router.get('/', async (req, res) => {
     try {
         const restaurants = await Restaurant.find();
-        res.json(restaurants);
+        res.json(restaurants.map(restaurant => ({ ...restaurant._doc, id: restaurant._id })));
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch dishes' });
+        res.status(500).json({ error: 'Failed to fetch restaurants' });
     }
 });
 
 router.get('/:id', async (req, res) => {
     try {
         const restaurant = await Restaurant.findById(req.params.id);
-        restaurant ? res.json(restaurant) : res.status(404).json({ error: 'Restaurant not found' });
+        const dishes = await Dish.find({restaurantId: req.params.id})
+
+        restaurant && dishes ? res.json({ restaurant: restaurant, dishes: dishes }) : res.status(404).json({ error: 'Restaurant/restaurant dishes not found' });
+    } catch {
+        res.status(400).json({ error: 'Invalid ID' });
+    }
+});
+
+router.get('/findRestaurant/:email', async (req, res) => {
+    try {
+        const restaurant = await Restaurant.findOne({userEmail: req.params.email});
+        restaurant ? res.json({ ...restaurant._doc, id: restaurant._id }) : res.status(404).json({ error: 'Invalid email' });
     } catch {
         res.status(400).json({ error: 'Invalid ID' });
     }

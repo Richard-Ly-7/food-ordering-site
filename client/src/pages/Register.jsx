@@ -51,17 +51,18 @@ export default function Register({ onAuth }){
             ),
         });
 
-        if(fields.selectValue === "Restaurant"){
-            await fetch(`http://localhost:4000/restaurants`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({name: fields.restaurantName, address: fields.address, description: fields.description, base64: fields.base64, userEmail: fields.email}),
-            });
-        }
-
         const data = await res.json();
+
         if (res.ok) {
-            onAuth(data.token);
+            if(fields.selectValue === "Restaurant"){
+                await fetch(`http://localhost:4000/restaurants`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({name: fields.restaurantName, address: fields.address, description: fields.description, base64: fields.base64, userEmail: fields.email}),
+                });
+            }
+        
+            onAuth(data.user);
             alert('Register successful!');
             navigate('/');
         } else {

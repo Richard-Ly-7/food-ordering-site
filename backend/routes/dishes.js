@@ -15,7 +15,7 @@ router.use(limiter);
 router.get('/', async (req, res) => {
     try {
         const dishes = await Dish.find();
-        res.json(dishes);
+        res.json(dishes.map(dish => ({...dish._doc, id: dish._id})));
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch dishes' });
     }
@@ -24,11 +24,12 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const dish = await Dish.findById(req.params.id);
-        dish ? res.json(dish) : res.status(404).json({ error: 'Dish not found' });
+        dish ? res.json({ ...dish._doc, id: dish._id}) : res.status(404).json({ error: 'Dish not found' });
     } catch {
         res.status(400).json({ error: 'Invalid ID' });
     }
 });
+
 
 router.post('/', async (req, res) => {
     try {

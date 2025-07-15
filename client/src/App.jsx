@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
+import RestaurantDishes from './pages/RestaurantDishes';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Post from './pages/Post';
@@ -25,7 +26,6 @@ function App() {
         });
 
         setUser(null);
-        setMessage('Logged out.');
     };
 
 return (
@@ -35,12 +35,15 @@ return (
     <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/restaurants" element={<Restaurants />} />
+        <Route path="/restaurantdishes" element={<RestaurantDishes />} />
         <Route path="/login" element={<Login onAuth={handleLogin} />} />
         <Route path="/register" element={<Register onAuth={handleLogin} />} />
-        <Route path="/post" element={<Post />} />
-        <Route path="/shoppingcart" element={<ShoppingCart />} />
-        <Route path="/purchase" element={<Purchase />} />
+        <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+        <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+        <Route path="/purchase" element={user ? (user.role === "buyer" ? <Purchase /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
     </Routes>
+
+
     </>
 )
 }

@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
-import Dish from '../components/Dish';
+import { useSearchParams } from 'react-router-dom';
+import Restaurant from '../components/Restaurant';
 import DishList from '../components/DishList';
-import SearchBar from '../components/SearchBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
 
-export default function Home(){
+export default function RestaurantDishes(){
+    const [searchParams] = useSearchParams();
+    const restaurantId = searchParams.get('restaurant');
 
-    const [dishes, setDishes] = useState([]);
+    const [restaurantDishes, setRestaurantDishes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/dishes`)
+        fetch(`http://localhost:4000/restaurants/${restaurantId}`)
             .then((res) => res.json())
             .then((data) => {
-                setDishes(data); 
+                setRestaurantDishes(data); 
                 setIsLoading(false);
             });
     }, []);
@@ -30,19 +32,22 @@ export default function Home(){
         );
     }
 
-    if(dishes.length === 0) {
+    if(restaurantDishes.length === 0) {
         return <div>No dishes found.</div>;
     }
 
     return (
-      <Container className="wrapper shadow-sm">
-        
-        <p className="h2 text-center">Welcome to OrderDropper!</p>
-        <p className="h6 fw-light text-center mb-5">Find what you're craving.</p>
-        <SearchBar />
+        <Container fluid="md" className="wrapper shadow-sm">
 
-        <DishList dishes={dishes} />
 
-      </Container>
+            <Row className="justify-content-evenly pb-5">
+                <Restaurant restaurant={restaurantDishes.restaurant} />
+            </Row>
+
+            <p className="h2 text-center mb-5">{restaurantDishes.restaurant.name}'s Menu</p>
+
+            <DishList dishes={restaurantDishes.dishes} />
+
+        </Container>
     )
 }

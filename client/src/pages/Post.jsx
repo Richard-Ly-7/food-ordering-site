@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Login(){
+export default function Post({ user }){
 
     const [fields, setFields] = useState({
         dishName: "",
@@ -24,11 +24,16 @@ export default function Login(){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        await fetch('http://localhost:4000/dishes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({name: fields.dishName, price: fields.price, restaurant: "placeholder", base64: fields.base64}),
-        });
+        const res = await fetch(`http://localhost:4000/restaurants/findRestaurant/${user.email}`);
+        const restaurant = await res.json();
+
+        if(res.ok) {
+            await fetch('http://localhost:4000/dishes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({name: fields.dishName, price: fields.price, base64: fields.base64, restaurant: restaurant.name, restaurantId: restaurant.id}),
+            });
+        }
 
     };
 
