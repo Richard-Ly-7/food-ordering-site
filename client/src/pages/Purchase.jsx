@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -5,13 +6,20 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 export default function Purchase(){
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        navigate(`/`);
+    }
+
     return (
         <Container fluid="md" className="wrapper shadow-sm">
             <p className="h2 text-center mb-5">Complete Your Order</p>
 
             <Row className="justify-content-center">
                 <Col xs={6} sm={6}>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-5">
                             <Form.Label>Enter your credit card details here:</Form.Label>
                             <Form.Control type="text" placeholder="Name On Card" />

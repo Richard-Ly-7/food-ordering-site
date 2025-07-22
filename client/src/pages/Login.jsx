@@ -24,7 +24,7 @@ export default function Login({ onAuth }){
         const data = await res.json();
 
         if (res.ok) {
-            onAuth(data.user);
+            onAuth(data);
             alert("Login successful!");
             navigate('/');
         } else {

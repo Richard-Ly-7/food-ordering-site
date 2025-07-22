@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const dishesRouter = require('./routes/dishes');
 const restaurantsRouter = require('./routes/restaurants');
 const authRoutes = require('./routes/auth.js');
+const shoppingCartRoutes = require('./routes/shoppingcart.js');
 
 const app = express();
 app.use(cookieParser());
@@ -19,6 +20,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use('/dishes', dishesRouter);
 app.use('/restaurants', restaurantsRouter);
 app.use('/api/auth', authRoutes);
+app.use('/shoppingcart', shoppingCartRoutes);
 
 mongoose
     .connect(process.env.MONGODB_URI)

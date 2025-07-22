@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -40,7 +41,7 @@ router.post('/login', async (req, res) => {
             sameSite: 'Lax',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        .json({ user });
+        .json({ ...user._doc, id: user._id });
         
     } catch (err) {
         console.error(err);
@@ -68,5 +69,7 @@ router.post('/logout', (req, res) => {
     });
     res.json({ message: 'Logged out successfully' });
 });
+
+
 
 module.exports = router;

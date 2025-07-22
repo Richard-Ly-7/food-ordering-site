@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
 
-export default function RestaurantDishes(){
+export default function RestaurantDishes({ updateCart, user }){
     const [searchParams] = useSearchParams();
     const restaurantId = searchParams.get('restaurant');
 
@@ -46,7 +46,7 @@ export default function RestaurantDishes(){
 
             <p className="h2 text-center mb-5">{restaurantDishes.restaurant.name}'s Menu</p>
 
-            <DishList dishes={restaurantDishes.dishes} />
+            <DishList dishes={restaurantDishes.dishes} updateCart={updateCart} user={user} />
 
         </Container>
     )

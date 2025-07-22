@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
     base64: { type: String },
-    role: { type: String, required: true }
+    role: { type: String, required: true },
+    shoppingCart: { type: [Object] }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 import Navbar from './components/Navbar';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,25 +22,45 @@ function App() {
 
     const handleLogout = async () => {
         await fetch('http://localhost:4000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
+            method: 'POST',
+            credentials: 'include'
         });
 
         setUser(null);
     };
+
+    const updateCart = async (dish, addToCart) => {
+        let updatedCart = [];
+
+        if(addToCart){
+            const cartItem = {...dish, id: nanoid()};
+            updatedCart = [...(user.shoppingCart || []), cartItem];
+        }else{
+            updatedCart = user.shoppingCart ? user.shoppingCart.filter(d => d.id !== dish.id) : [];
+        }
+        
+        setUser({...user, shoppingCart: updatedCart})
+
+        await fetch(`http://localhost:4000/shoppingcart/${user.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shoppingCart: updatedCart }),
+        });
+
+    }
 
 return (
     <>
     <Navbar user={user} onLogout={handleLogout} />
 
     <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home updateCart={updateCart} user={user} />} />
         <Route path="/restaurants" element={<Restaurants />} />
-        <Route path="/restaurantdishes" element={<RestaurantDishes />} />
+        <Route path="/restaurantdishes" element={<RestaurantDishes updateCart={updateCart} user={user} />} />
         <Route path="/login" element={<Login onAuth={handleLogin} />} />
         <Route path="/register" element={<Register onAuth={handleLogin} />} />
         <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-        <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+        <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
         <Route path="/purchase" element={user ? (user.role === "buyer" ? <Purchase /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
     </Routes>
 

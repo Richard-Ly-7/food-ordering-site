@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
 
-export default function Home(){
+export default function Home({ updateCart, user }){
 
     const [dishes, setDishes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +41,7 @@ export default function Home(){
         <p className="h6 fw-light text-center mb-5">Find what you're craving.</p>
         <SearchBar />
 
-        <DishList dishes={dishes} />
+        <DishList dishes={dishes} updateCart={updateCart} user={user} />
 
       </Container>
     )

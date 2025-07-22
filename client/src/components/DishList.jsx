@@ -2,7 +2,7 @@ import Dish from './Dish';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-export default function FlightList({ dishes }) {
+export default function FlightList({ dishes, updateCart, user }) {
     const dishList = [];
 
     for (let i = 0; i < dishes.length; i += 3) {
@@ -12,6 +12,8 @@ export default function FlightList({ dishes }) {
                     <Dish
                         key={dish._id}
                         dish={dish}
+                        updateCart={updateCart} 
+                        user={user}
                     />
                 ))}
             </Row>
