@@ -46,7 +46,7 @@ export default function Register({ onAuth }){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fields.selectValue === "Buyer" ? 
-                {email: fields.email, username: fields.displayName, password: fields.password, base64: fields.base64, role: "buyer"} :
+                {email: fields.email, username: fields.displayName, password: fields.password, address: fields.address, base64: fields.base64, role: "buyer"} :
                 {email: fields.email, username: fields.restaurantName, password: fields.password, role: "restaurant"}
             ),
         });
@@ -89,27 +89,34 @@ export default function Register({ onAuth }){
                         {
                             fields.selectValue === "Buyer" ?
 
-                            <Form.Group className="mb-4">
-                                <Form.Label>Display Name</Form.Label>
-                                <Form.Control type="text" value={fields.displayName} onChange={(e) => setFields({...fields, displayName: e.target.value})} required  />
-                            </Form.Group>
+                            <>
+                                <Form.Group className="mb-4">
+                                    <Form.Label>Display Name</Form.Label>
+                                    <Form.Control type="text" value={fields.displayName} onChange={(e) => setFields({...fields, displayName: e.target.value})} required  />
+                                </Form.Group>
 
+                                <Form.Group className="mb-4">
+                                    <Form.Label>Delivery Address</Form.Label>
+                                    <Form.Control type="text" value={fields.address} onChange={(e) => setFields({...fields, address: e.target.value})} required />
+                                </Form.Group>
+
+                            </>
                             :
                             
                             <>
                                 <Form.Group className="mb-4">
-                                <Form.Label>Restaurant Name</Form.Label>
-                                <Form.Control type="text" value={fields.restaurantName} onChange={(e) => setFields({...fields, restaurantName: e.target.value})} required />
+                                    <Form.Label>Restaurant Name</Form.Label>
+                                    <Form.Control type="text" value={fields.restaurantName} onChange={(e) => setFields({...fields, restaurantName: e.target.value})} required />
                                 </Form.Group>
 
                                 <Form.Group className="mb-4">
-                                <Form.Label>Address</Form.Label>
-                                <Form.Control type="text" value={fields.address} onChange={(e) => setFields({...fields, address: e.target.value})} required />
+                                    <Form.Label>Address</Form.Label>
+                                    <Form.Control type="text" value={fields.address} onChange={(e) => setFields({...fields, address: e.target.value})} required />
                                 </Form.Group>
                                 
                                 <Form.Group className="mb-4">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" value={fields.description} onChange={(e) => setFields({...fields, description: e.target.value})} required />
+                                    <Form.Label>Description</Form.Label>
+                                    <Form.Control type="text" value={fields.description} onChange={(e) => setFields({...fields, description: e.target.value})} required />
                                 </Form.Group>
                             </>
                         }

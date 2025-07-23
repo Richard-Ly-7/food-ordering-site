@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Purchase(){
+export default function Purchase({cartTotal}){
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -47,7 +47,7 @@ export default function Purchase(){
                             <Col xs={4} sm={4} className="ms-auto">
                                 <Container className="d-flex flex-column align-items-center text-end border border-primary p-4">
                                     <p className="h5">Order Total:</p>
-                                    <p className="h2">$43.97</p>
+                                    <p className="h2">${cartTotal}</p>
                                     <Button variant="outline-warning" type="submit" size="lg" className="mt-2">Order</Button>
                                 </Container>
                             </Col>

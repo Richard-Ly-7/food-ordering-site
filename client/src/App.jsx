@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import Navbar from './components/Navbar';
@@ -15,6 +15,7 @@ import Purchase from './pages/Purchase';
 
 function App() {
     const [user, setUser] = useState(null);
+    const [cartTotal, setCartTotal] = useState(0);
     
     const handleLogin = (user) => {
         setUser(user);
@@ -49,6 +50,14 @@ function App() {
 
     }
 
+    useEffect(() => {
+        let total = 0;
+        if(user?.shoppingCart){
+            user.shoppingCart.forEach(cartItem => total += cartItem.price);
+        }
+        setCartTotal(total.toFixed(2));
+    }, [user?.shoppingCart])
+
 return (
     <>
     <Navbar user={user} onLogout={handleLogout} />
@@ -60,8 +69,8 @@ return (
         <Route path="/login" element={<Login onAuth={handleLogin} />} />
         <Route path="/register" element={<Register onAuth={handleLogin} />} />
         <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-        <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-        <Route path="/purchase" element={user ? (user.role === "buyer" ? <Purchase /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+        <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} cartTotal={cartTotal} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+        <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal}  /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
     </Routes>
 
 
