@@ -27,7 +27,9 @@ router.get('/:id', async (req, res) => {
         const restaurant = await Restaurant.findById(req.params.id);
         const dishes = await Dish.find({restaurantId: req.params.id})
 
-        restaurant && dishes ? res.json({ restaurant: restaurant, dishes: dishes }) : res.status(404).json({ error: 'Restaurant/restaurant dishes not found' });
+        const dishList = dishes.map(dish => ({...dish._doc, id: dish._id}));
+
+        restaurant && dishes ? res.json({ restaurant: restaurant, dishes: dishList }) : res.status(404).json({ error: 'Restaurant/restaurant dishes not found' });
     } catch {
         res.status(400).json({ error: 'Invalid ID' });
     }

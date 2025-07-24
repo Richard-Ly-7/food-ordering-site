@@ -48,7 +48,27 @@ function App() {
             body: JSON.stringify({ shoppingCart: updatedCart }),
         });
 
-    }
+    };
+
+    const deleteDish = async (id, dishes, setDishes) => {
+        const res = await fetch(`http://localhost:4000/dishes/${id}`, {
+            method: 'DELETE'
+        });
+        if(res.ok){
+            setDishes(dishes.filter((dish) => dish.id !== id));
+        }
+    };
+
+    const updateDish = async (id, updatedDish, dishes, setDishes) => {
+        const res = await fetch(`http://localhost:4000/dishes/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({updatedDish: updatedDish}),
+        });
+        if(res.ok){
+            setDishes(dishes.map((dish) => dish.id === id ? updatedDish : dish));
+        }
+    };
 
     useEffect(() => {
         let total = 0;
@@ -56,24 +76,22 @@ function App() {
             user.shoppingCart.forEach(cartItem => total += cartItem.price);
         }
         setCartTotal(total.toFixed(2));
-    }, [user?.shoppingCart])
+    }, [user?.shoppingCart]);
 
 return (
     <>
-    <Navbar user={user} onLogout={handleLogout} />
+        <Navbar user={user} onLogout={handleLogout} />
 
-    <Routes>
-        <Route path="/" element={<Home updateCart={updateCart} user={user} />} />
-        <Route path="/restaurants" element={<Restaurants />} />
-        <Route path="/restaurantdishes" element={<RestaurantDishes updateCart={updateCart} user={user} />} />
-        <Route path="/login" element={<Login onAuth={handleLogin} />} />
-        <Route path="/register" element={<Register onAuth={handleLogin} />} />
-        <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-        <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} cartTotal={cartTotal} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-        <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal}  /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-    </Routes>
-
-
+        <Routes>
+            <Route path="/" element={<Home updateCart={updateCart} user={user} />} />
+            <Route path="/restaurants" element={<Restaurants />} />
+            <Route path="/restaurantdishes" element={<RestaurantDishes updateCart={updateCart} user={user} />} />
+            <Route path="/login" element={<Login onAuth={handleLogin} />} />
+            <Route path="/register" element={<Register onAuth={handleLogin} />} />
+            <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+            <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} cartTotal={cartTotal} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+            <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal}  /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+        </Routes>
     </>
 )
 }

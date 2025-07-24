@@ -1,16 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 
 export default function Restaurant({restaurant}){
-    
+
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const restaurantClickable = searchParams.get('restaurant') === null;
 
     const navigateToDishes = () => {
         navigate(`/restaurantDishes?restaurant=${restaurant.id}`);
     }
 
+    
+
     return (
-        <Col xs={7} sm={7} className="d-flex flex-row justify-content-between shadow-sm rounded p-0 restaurant-container mb-5" onClick={navigateToDishes}>
+        <Col xs={7} sm={7} className="d-flex flex-row justify-content-between shadow-sm rounded p-0 restaurant-container mb-5" onClick={restaurantClickable ? navigateToDishes : undefined} >
             {restaurant.base64 ? 
                 <img src={restaurant.base64} className="restaurant-image ms-2 my-auto rounded" /> : 
                 <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" fill="slategray" viewBox="0 0 16 16"  className="restaurant-image ms-2 my-auto rounded" >

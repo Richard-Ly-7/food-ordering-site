@@ -20,7 +20,7 @@ export default function RestaurantDishes({ updateCart, user }){
                 setRestaurantDishes(data); 
                 setIsLoading(false);
             });
-    }, []);
+    }, [restaurantId, restaurantDishes]);
 
     if (isLoading){
         return (

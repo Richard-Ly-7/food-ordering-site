@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import Dish from '../components/Dish';
 import DishList from '../components/DishList';
 import SearchBar from '../components/SearchBar';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
 
 export default function Home({ updateCart, user }){
@@ -18,7 +16,7 @@ export default function Home({ updateCart, user }){
                 setDishes(data); 
                 setIsLoading(false);
             });
-    }, []);
+    }, [dishes]);
 
     if (isLoading){
         return (
