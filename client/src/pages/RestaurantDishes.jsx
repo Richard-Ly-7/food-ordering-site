@@ -6,11 +6,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
 
-export default function RestaurantDishes({ updateCart, user }){
+export default function RestaurantDishes({ updateCart, deleteDish, updateDish, user }){
     const [searchParams] = useSearchParams();
     const restaurantId = searchParams.get('restaurant');
 
-    const [restaurantDishes, setRestaurantDishes] = useState([]);
+    const [restaurantDishes, setRestaurantDishes] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export default function RestaurantDishes({ updateCart, user }){
                 setRestaurantDishes(data); 
                 setIsLoading(false);
             });
-    }, [restaurantId, restaurantDishes]);
+    }, [restaurantId]);
 
     if (isLoading){
         return (
@@ -30,10 +30,6 @@ export default function RestaurantDishes({ updateCart, user }){
                 </Spinner>
             </div>
         );
-    }
-
-    if(restaurantDishes.length === 0) {
-        return <div>No dishes found.</div>;
     }
 
     return (
@@ -46,7 +42,10 @@ export default function RestaurantDishes({ updateCart, user }){
 
             <p className="h2 text-center mb-5">{restaurantDishes.restaurant.name}'s Menu</p>
 
-            <DishList dishes={restaurantDishes.dishes} updateCart={updateCart} user={user} />
+            { restaurantDishes.length === 0 ? 
+                <div>No dishes found.</div> :
+                <DishList dishes={restaurantDishes.dishes} setDishes={setRestaurantDishes} updateCart={updateCart} deleteDish={deleteDish} updateDish={updateDish} user={user} modifiable={user?.restaurantId === restaurantId}/>
+            }
 
         </Container>
     )

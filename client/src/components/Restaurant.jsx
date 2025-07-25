@@ -11,8 +11,6 @@ export default function Restaurant({restaurant}){
         navigate(`/restaurantDishes?restaurant=${restaurant.id}`);
     }
 
-    
-
     return (
         <Col xs={7} sm={7} className="d-flex flex-row justify-content-between shadow-sm rounded p-0 restaurant-container mb-5" onClick={restaurantClickable ? navigateToDishes : undefined} >
             {restaurant.base64 ? 

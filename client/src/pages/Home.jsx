@@ -16,7 +16,7 @@ export default function Home({ updateCart, user }){
                 setDishes(data); 
                 setIsLoading(false);
             });
-    }, [dishes]);
+    }, []);
 
     if (isLoading){
         return (

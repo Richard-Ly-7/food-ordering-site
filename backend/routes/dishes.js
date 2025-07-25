@@ -4,13 +4,13 @@ const Dish = require('../models/Dish');
 
 const router = express.Router();
 
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: 'Too many requests, try again later.'
-});
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+//     message: 'Too many requests, try again later.'
+// });
 
-router.use(limiter);
+// router.use(limiter);
 
 router.get('/', async (req, res) => {
     try {
@@ -43,8 +43,12 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const deleted = await Dish.findByIdAndDelete(req.params.id);
-        deleted ? res.json({ message: 'Dish deleted' }) : res.status(404).json({ error: 'Not found' });
+        const {updatedDish} = req.body;
+        const updated = await Dish.findByIdAndUpdate(
+            req.params.id,
+            { $set: updatedDish }
+        );
+        updated ? res.json({ message: 'Dish updated' }) : res.status(404).json({ error: 'Not found' });
     } catch {
         res.status(400).json({ error: 'Invalid ID' });
     }

@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     address: { type: String },
     base64: { type: String },
     role: { type: String, required: true },
-    shoppingCart: { type: [Object] }
+    shoppingCart: { type: [Object] },
+    restaurantId: { type: mongoose.Schema.Types.ObjectId }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -30,11 +30,13 @@ export default function Navbar({ user, onLogout }) {
                 user.role === "restaurant" ? 
                 <>
                   <Nav.Link as={Link} to="/post"><p className="text-light h5">Post</p></Nav.Link>
+                  <Nav.Link as={Link} to={`/restaurantDishes?restaurant=${user.restaurantId}`}><p className="text-light h5">Profile</p></Nav.Link>
                   <Button variant="link" type="button" size="lg" onClick={handleLogout} >Logout</Button>
                 </>
                 :
                 <>
                   <Nav.Link as={Link} to="/shoppingcart"><p className="text-light h5">Checkout</p></Nav.Link>
+                  <Nav.Link as={Link} to="/profile"><p className="text-light h5">Profile</p></Nav.Link>
                   <Button variant="link" type="button" size="lg" onClick={handleLogout} >Logout</Button>
                 </>
               )
@@ -45,4 +47,4 @@ export default function Navbar({ user, onLogout }) {
     </NavigationBar>
   );
 }
-
+//`/restaurantDishes?restaurant=${user.restaurantId}`

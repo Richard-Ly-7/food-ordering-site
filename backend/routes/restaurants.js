@@ -5,13 +5,13 @@ const Dish = require('../models/Dish');
 
 const router = express.Router();
 
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: 'Too many requests, try again later.'
-});
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+//     message: 'Too many requests, try again later.'
+// });
 
-router.use(limiter);
+// router.use(limiter);
 
 router.get('/', async (req, res) => {
     try {
