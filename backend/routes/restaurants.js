@@ -15,8 +15,25 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const searchQuery = req.query.searchQuery || "";
+
+        const startIndex = limit * (page - 1);
+
         const restaurants = await Restaurant.find();
-        res.json(restaurants.map(restaurant => ({ ...restaurant._doc, id: restaurant._id })));
+
+        const filteredRestaurants = searchQuery ? 
+            restaurants.filter((restaurant) => 
+                restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+            ) : restaurants;
+        const totalRestaurants = filteredRestaurants.length;
+        const displayedRestaurants = filteredRestaurants.slice(startIndex, startIndex + limit);
+        
+        res.json({
+            restaurants: displayedRestaurants.map(restaurant => ({ ...restaurant._doc, id: restaurant._id })),
+            totalRestaurants
+        });
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch restaurants' });
     }
@@ -24,12 +41,25 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 9;
+        const searchQuery = req.query.searchQuery || "";
+
+        const startIndex = limit * (page - 1);
+
         const restaurant = await Restaurant.findById(req.params.id);
         const dishes = await Dish.find({restaurantId: req.params.id})
+        const filteredDishes = searchQuery ? 
+            dishes.filter((dish) => 
+                dish.name.toLowerCase().includes(searchQuery.toLowerCase())
+            ) : dishes;
+        
+        const totalDishes = filteredDishes.length;
+        const displayedDishes = filteredDishes.slice(startIndex, startIndex + limit);
 
-        const dishList = dishes.map(dish => ({...dish._doc, id: dish._id}));
+        const dishList = displayedDishes.map(dish => ({...dish._doc, id: dish._id}));
 
-        restaurant && dishes ? res.json({ restaurant: restaurant, dishes: dishList }) : res.status(404).json({ error: 'Restaurant/restaurant dishes not found' });
+        restaurant && dishes ? res.json({ restaurant: restaurant, dishes: dishList, totalDishes }) : res.status(404).json({ error: 'Restaurant/restaurant dishes not found' });
     } catch {
         res.status(400).json({ error: 'Invalid ID' });
     }

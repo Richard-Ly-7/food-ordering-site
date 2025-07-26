@@ -1,22 +1,37 @@
 import { useState, useEffect } from 'react';
 import DishList from '../components/DishList';
 import SearchBar from '../components/SearchBar';
+import PageButtons from '../components/PageButtons';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner'; 
 
 export default function Home({ updateCart, user }){
+    const [currentPage, setCurrentPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const [dishes, setDishes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const decrementPage = () => {
+        if(currentPage > 1){
+            setCurrentPage(currentPage - 1);  
+        }
+    }
+
+    const incrementPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+
     useEffect(() => {
-        fetch(`http://localhost:4000/dishes`)
+        fetch(`http://localhost:4000/dishes?page=${currentPage}&limit=${9}&searchQuery=${searchQuery}`)
             .then((res) => res.json())
             .then((data) => {
-                setDishes(data); 
+                setDishes(data.dishes); 
+                setLastPage(Math.ceil(data.totalDishes / 9));
                 setIsLoading(false);
             });
-    }, []);
+    }, [currentPage, searchQuery]);
 
     if (isLoading){
         return (
@@ -37,10 +52,11 @@ export default function Home({ updateCart, user }){
         
         <p className="h2 text-center">Welcome to OrderDropper!</p>
         <p className="h6 fw-light text-center mb-5">Find what you're craving.</p>
-        <SearchBar />
+        <SearchBar setSearchQuery={setSearchQuery}/>
 
         <DishList dishes={dishes} updateCart={updateCart} user={user} />
 
+        <PageButtons currentPage={currentPage} lastPage={lastPage} decrementPage={decrementPage} incrementPage={incrementPage} />
       </Container>
     )
 }

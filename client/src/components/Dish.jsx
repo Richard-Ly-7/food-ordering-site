@@ -75,7 +75,7 @@ export default function Dish({ dish, dishes, setDishes, updateCart, deleteDish, 
                                         <Button variant="outline-danger" type="submit" size="sm" className="mb-4" onClick={() => deleteDish(dish.id, dishes, setDishes)}>Delete</Button>
                                     </div>
                                     :
-                                    ""
+                                    <div className="d-flex pt-3"></div>
                             )  
                         }
 

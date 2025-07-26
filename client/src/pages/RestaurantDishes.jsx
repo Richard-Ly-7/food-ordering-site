@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Restaurant from '../components/Restaurant';
 import DishList from '../components/DishList';
+import SearchBar from '../components/SearchBar';
+import PageButtons from '../components/PageButtons';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
@@ -10,17 +12,22 @@ export default function RestaurantDishes({ updateCart, deleteDish, updateDish, u
     const [searchParams] = useSearchParams();
     const restaurantId = searchParams.get('restaurant');
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState("");
+
     const [restaurantDishes, setRestaurantDishes] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/restaurants/${restaurantId}`)
+        fetch(`http://localhost:4000/restaurants/${restaurantId}?page=${currentPage}&limit=${9}&searchQuery=${searchQuery}`)
             .then((res) => res.json())
             .then((data) => {
                 setRestaurantDishes(data); 
+                setLastPage(Math.ceil(data.totalDishes / 9));
                 setIsLoading(false);
             });
-    }, [restaurantId]);
+    }, [restaurantId, currentPage, searchQuery]);
 
     if (isLoading){
         return (
@@ -30,6 +37,16 @@ export default function RestaurantDishes({ updateCart, deleteDish, updateDish, u
                 </Spinner>
             </div>
         );
+    }
+
+    const decrementPage = () => {
+        if(currentPage > 1){
+            setCurrentPage(currentPage - 1);  
+        }
+    }
+
+    const incrementPage = () => {
+        setCurrentPage(currentPage + 1);
     }
 
     return (
@@ -42,11 +59,15 @@ export default function RestaurantDishes({ updateCart, deleteDish, updateDish, u
 
             <p className="h2 text-center mb-5">{restaurantDishes.restaurant.name}'s Menu</p>
 
+            <SearchBar setSearchQuery={setSearchQuery}/>
+            
             { restaurantDishes.length === 0 ? 
                 <div>No dishes found.</div> :
                 <DishList dishes={restaurantDishes.dishes} setDishes={setRestaurantDishes} updateCart={updateCart} deleteDish={deleteDish} updateDish={updateDish} user={user} modifiable={user?.restaurantId === restaurantId}/>
             }
 
+            <PageButtons currentPage={currentPage} lastPage={lastPage} decrementPage={decrementPage} incrementPage={incrementPage} />
+            
         </Container>
     )
 }

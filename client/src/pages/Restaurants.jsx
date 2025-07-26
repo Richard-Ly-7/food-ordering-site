@@ -1,21 +1,37 @@
 import { useState, useEffect } from 'react';
 import RestaurantList from '../components/RestaurantList';
 import SearchBar from '../components/SearchBar';
+import PageButtons from '../components/PageButtons';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner'; 
 
 export default function Restaurants () {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState("");
+
     const [restaurants, setRestaurants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const decrementPage = () => {
+        if(currentPage > 1){
+            setCurrentPage(currentPage - 1);  
+        }
+    }
+
+    const incrementPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+
     useEffect(() => {
-        fetch(`http://localhost:4000/restaurants`)
+        fetch(`http://localhost:4000/restaurants?page=${currentPage}&limit=${5}&searchQuery=${searchQuery}`)
             .then((res) => res.json())
             .then((data) => {
-                setRestaurants(data); 
+                setRestaurants(data.restaurants); 
+                setLastPage(Math.ceil(data.totalRestaurants / 5))
                 setIsLoading(false);
             });
-    }, []);
+    }, [currentPage, searchQuery]);
 
     if (isLoading){
         return (
@@ -35,15 +51,13 @@ export default function Restaurants () {
       <Container fluid="md" className="wrapper shadow-sm">
               
         <p className="h2 text-center mb-5">Best Nearby Restaurants</p>
-        <SearchBar />
 
+        <SearchBar setSearchQuery={setSearchQuery}/>
+        
         <RestaurantList restaurants={restaurants} />
-        {/* <Row className="justify-content-evenly pb-5">
-          <Restaurant restaurant={{base64: "https://picsum.photos/seed/picsum/200/300", name: "Olive Garden", address: "20080 Langley Bypass, Langley, BC V3A 9J7", description: "An Italian restaurant best known for their pastas and salads"}}/>
-          <Restaurant restaurant={{base64: "https://picsum.photos/seed/picsum/200/300", name: "Olive Garden", address: "20080 Langley Bypass, Langley, BC V3A 9J7", description: "An Italian restaurant best known for their pastas and salads"}}/>
-          <Restaurant restaurant={{base64: "https://picsum.photos/seed/picsum/200/300", name: "Olive Garden", address: "20080 Langley Bypass, Langley, BC V3A 9J7", description: "An Italian restaurant best known for their pastas and salads"}}/>
-        </Row> */}
 
+        <PageButtons currentPage={currentPage} lastPage={lastPage} decrementPage={decrementPage} incrementPage={incrementPage} />
+        
       </Container>
     )
 }

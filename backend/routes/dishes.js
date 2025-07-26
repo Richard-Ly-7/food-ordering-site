@@ -14,8 +14,23 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 9;
+        const searchQuery = req.query.searchQuery || "";
+
+        const startIndex = limit * (page - 1);
+
         const dishes = await Dish.find();
-        res.json(dishes.map(dish => ({...dish._doc, id: dish._id})));
+        const filteredDishes = searchQuery ? 
+            dishes.filter((dish) => 
+                dish.name.toLowerCase().includes(searchQuery.toLowerCase())
+            ) : dishes;
+        const totalDishes = filteredDishes.length;
+        const displayedDishes = filteredDishes.slice(startIndex, startIndex + limit);
+        res.json({
+            dishes: displayedDishes.map(dish => ({...dish._doc, id: dish._id})),
+            totalDishes
+        });
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch dishes' });
     }
