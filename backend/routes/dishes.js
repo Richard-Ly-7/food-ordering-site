@@ -1,6 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Dish = require('../models/Dish');
+const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -46,7 +47,10 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
+    if(req.user.role !== "restaurant"){
+        return res.status(401).json({ error: 'User must have the restaurant role' });
+    }
     try {
         const newDish = new Dish(req.body);
         const saved = await newDish.save();
@@ -56,7 +60,10 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
+    if(req.user.role !== "restaurant"){
+        return res.status(401).json({ error: 'User must have the restaurant role' });
+    }
     try {
         const {updatedDish} = req.body;
         const updated = await Dish.findByIdAndUpdate(
@@ -69,7 +76,10 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyToken, async (req, res) => {
+    if(req.user.role !== "restaurant"){
+        return res.status(401).json({ error: 'User must have the restaurant role' });
+    }
     try {
         const deleted = await Dish.findByIdAndDelete(req.params.id);
         deleted ? res.json({ message: 'Dish deleted' }) : res.status(404).json({ error: 'Not found' });

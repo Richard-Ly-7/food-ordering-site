@@ -56,17 +56,20 @@ function App() {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ shoppingCart: updatedCart }),
+            credentials: 'include'
         });
 
     };
 
     const deleteDish = async (id, dishes, setDishes) => {
         const res = await fetch(`http://localhost:4000/dishes/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include'
         });
         if(res.ok){
+            const data = await res.json();
             setDishes(prev => ({...prev, dishes: dishes.filter((dish) => dish.id !== id)}));
-            displayMessage("Dish deleted!");
+            displayMessage(data.message);
         }
     };
 
@@ -75,11 +78,13 @@ function App() {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({updatedDish: updatedDish}),
+            credentials: 'include'
         });
         if(res.ok){
+            const data = await res.json();
             const updatedDishes = dishes.map((dish) => dish.id === id ? updatedDish : dish);
             setDishes(prev => ({...prev, dishes: updatedDishes}));
-            displayMessage("Dish updated!");
+            displayMessage(data.message);
         }
     };
 

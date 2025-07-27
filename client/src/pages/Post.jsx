@@ -32,6 +32,7 @@ export default function Post({ user, displayMessage }){
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({name: fields.dishName, price: fields.price, base64: fields.base64, restaurant: restaurant.name, restaurantId: restaurant.id}),
+                credentials: 'include'
             });
 
             const postData = await dishRes.json();

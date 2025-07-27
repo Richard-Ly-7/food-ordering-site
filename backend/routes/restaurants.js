@@ -2,6 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Restaurant = require('../models/Restaurant');
 const Dish = require('../models/Dish');
+const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -84,22 +85,28 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
-    try {
-        const deleted = await Restaurant.findByIdAndDelete(req.params.id);
-        deleted ? res.json({ message: 'Restaurant deleted' }) : res.status(404).json({ error: 'Not found' });
-    } catch {
-        res.status(400).json({ error: 'Invalid ID' });
-    }
-});
+// router.put('/:id', verifyToken, async (req, res) => {
+//     if(req.user.role !== "restaurant"){
+//         return res.status(401).json({ error: 'User must have the restaurant role' });
+//     }
+//     try {
+//         const deleted = await Restaurant.findByIdAndDelete(req.params.id);
+//         deleted ? res.json({ message: 'Restaurant deleted' }) : res.status(404).json({ error: 'Not found' });
+//     } catch {
+//         res.status(400).json({ error: 'Invalid ID' });
+//     }
+// });
 
-router.delete('/:id', async (req, res) => {
-    try {
-        const deleted = await Restaurant.findByIdAndDelete(req.params.id);
-        deleted ? res.json({ message: 'Restaurant deleted' }) : res.status(404).json({ error: 'Not found' });
-    } catch {
-        res.status(400).json({ error: 'Invalid ID' });
-    }
-});
+// router.delete('/:id', verifyToken, async (req, res) => {
+//     if(req.user.role !== "restaurant"){
+//         return res.status(401).json({ error: 'User must have the restaurant role' });
+//     }
+//     try {
+//         const deleted = await Restaurant.findByIdAndDelete(req.params.id);
+//         deleted ? res.json({ message: 'Restaurant deleted' }) : res.status(404).json({ error: 'Not found' });
+//     } catch {
+//         res.status(400).json({ error: 'Invalid ID' });
+//     }
+// });
 
 module.exports = router;
