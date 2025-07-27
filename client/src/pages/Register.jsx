@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Register({ onAuth }){
+export default function Register({ onAuth, displayMessage }){
     const [fields, setFields] = useState({
         selectValue: "Buyer",
         displayName: "",
@@ -55,10 +55,10 @@ export default function Register({ onAuth }){
 
         if (res.ok) {
             onAuth(data.user);
-            alert('Register successful!');
+            displayMessage('Register successful!');
             navigate('/');
         } else {
-            alert(data.error);
+            displayMessage(data.error);
         }
         
     };

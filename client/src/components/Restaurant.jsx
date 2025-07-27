@@ -12,7 +12,7 @@ export default function Restaurant({restaurant}){
     }
 
     return (
-        <Col xs={7} sm={7} className="d-flex flex-row justify-content-between shadow-sm rounded p-0 restaurant-container mb-5" onClick={restaurantClickable ? navigateToDishes : undefined} >
+        <Col xs={7} sm={7} className={`d-flex flex-row justify-content-between shadow-sm rounded p-0 restaurant-container mb-5 ${restaurantClickable ? "restaurant-container-clickable" : ""}`} onClick={restaurantClickable ? navigateToDishes : undefined} >
             {restaurant.base64 ? 
                 <img src={restaurant.base64} className="restaurant-image ms-2 my-auto rounded" /> : 
                 <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" fill="slategray" viewBox="0 0 16 16"  className="restaurant-image ms-2 my-auto rounded" >

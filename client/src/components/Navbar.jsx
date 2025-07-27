@@ -4,11 +4,12 @@ import Nav from 'react-bootstrap/Nav';
 import NavigationBar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
-export default function Navbar({ user, onLogout }) {
+export default function Navbar({ user, onLogout, displayMessage }) {
   const navigate = useNavigate();
   
   const handleLogout = () => {
       onLogout();
+      displayMessage("You have logged out.");
       navigate('/');
   };
 
@@ -31,13 +32,13 @@ export default function Navbar({ user, onLogout }) {
                 <>
                   <Nav.Link as={Link} to="/post"><p className="text-light h5">Post</p></Nav.Link>
                   <Nav.Link as={Link} to={`/restaurantDishes?restaurant=${user.restaurantId}`}><p className="text-light h5">Profile</p></Nav.Link>
-                  <Button variant="link" type="button" size="lg" onClick={handleLogout} >Logout</Button>
+                  <Nav.Link onClick={handleLogout} ><p className="text-light h5">Logout</p></Nav.Link>
                 </>
                 :
                 <>
                   <Nav.Link as={Link} to="/shoppingcart"><p className="text-light h5">Checkout</p></Nav.Link>
                   <Nav.Link as={Link} to="/profile"><p className="text-light h5">Profile</p></Nav.Link>
-                  <Button variant="link" type="button" size="lg" onClick={handleLogout} >Logout</Button>
+                  <Nav.Link onClick={handleLogout} ><p className="text-light h5">Logout</p></Nav.Link>
                 </>
               )
             }
@@ -47,4 +48,3 @@ export default function Navbar({ user, onLogout }) {
     </NavigationBar>
   );
 }
-//`/restaurantDishes?restaurant=${user.restaurantId}`

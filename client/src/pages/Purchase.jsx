@@ -5,11 +5,12 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Purchase({cartTotal}){
+export default function Purchase({cartTotal, displayMessage}){
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        displayMessage("Your order is on the way!");
         navigate(`/`);
     }
 
@@ -30,13 +31,13 @@ export default function Purchase({cartTotal}){
                         </Form.Group>
 
                         <Row>
-                            <Col xs={10} sm={10}>
+                            <Col xs={8} lg={10}>
                                 <Form.Group className="mb-5">
                                     <Form.Control type="text" placeholder="Expiry Date" />
                                 </Form.Group>
                             </Col>
 
-                            <Col xs={2} sm={2}>
+                            <Col xs={4} lg={2}>
                                 <Form.Group className="mb-5">
                                     <Form.Control type="text" placeholder="CVV" />
                                 </Form.Group>
@@ -44,11 +45,11 @@ export default function Purchase({cartTotal}){
                         </Row>
 
                         <Row>
-                            <Col xs={4} sm={4} className="ms-auto">
+                            <Col sm={6} md={5} className="ms-auto">
                                 <Container className="d-flex flex-column align-items-center text-end border border-primary p-4">
                                     <p className="h5">Order Total:</p>
                                     <p className="h2">${cartTotal}</p>
-                                    <Button variant="outline-warning" type="submit" size="lg" className="mt-2">Order</Button>
+                                    <Button variant="outline-warning" type="submit" size="lg" className="w-100 mt-2">Order</Button>
                                 </Container>
                             </Col>
                         </Row>

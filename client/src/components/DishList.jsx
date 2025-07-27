@@ -5,10 +5,10 @@ import Row from 'react-bootstrap/Row';
 export default function DishList({ dishes, setDishes, updateCart, deleteDish, updateDish, user, modifiable }) {
     const dishList = [];
 
-    for (let i = 0; i < dishes.length; i += 3) {
+    for (let i = 0; i < dishes.length; i += 2) {
         dishList.push(
-            <Row key={i} className="justify-content-evenly pb-5">
-                {dishes.slice(i, i + 3).map((dish) => (
+            <Row key={i} className="justify-content-evenly">
+                {dishes.slice(i, i + 2).map((dish) => (
                     <Dish
                         key={dish._id}
                         dish={dish}

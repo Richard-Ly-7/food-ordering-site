@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner'; 
 
-export default function ShoppingCart({user, updateCart, cartTotal}){
+export default function ShoppingCart({user, updateCart, cartTotal, displayMessage}){
 
     const navigate = useNavigate();
 
@@ -21,11 +21,11 @@ export default function ShoppingCart({user, updateCart, cartTotal}){
                 <Col xs={6} sm={6} className="mt-5">
                     { user.shoppingCart.length === 0 ? <div>Cart is empty.</div> : <CartList cartItems={user.shoppingCart} updateCart={updateCart} /> }
                 </Col>
-                <Col xs={2} sm={2} className="d-flex align-items-end">
-                    <Container className="text-end border border-primary p-4">
+                <Col xs={4} xl={2} className="d-flex align-items-end">
+                    <Container className="text-start border border-primary p-4">
                         <p className="h5">Order Total:</p>
                         <p className="h2">${cartTotal}</p>
-                        <Button variant="outline-warning" type="submit" size="lg" className="mt-2" onClick={() => user.shoppingCart.length === 0 ? alert("Please add an item to your cart.") : navigate(`/purchase`) }>Proceed To Purchase</Button>
+                        <Button variant="outline-warning" type="submit" size="lg" className="mt-2" onClick={() => user.shoppingCart.length === 0 ? displayMessage("Please add an item to your cart.") : navigate(`/purchase`) }>Proceed To Purchase</Button>
                     </Container>
                 </Col>
             </Row>

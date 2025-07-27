@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch) return res.status(401).json({ error:'Invalid credentials' });
 
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+        const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET);
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/me', async (req, res) => {
+router.get('/me', verifyToken, async (req, res) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ error: 'Missing token' });
     try {

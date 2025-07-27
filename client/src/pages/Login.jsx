@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Login({ onAuth }){
+export default function Login({ onAuth, displayMessage }){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -25,10 +25,10 @@ export default function Login({ onAuth }){
 
         if (res.ok) {
             onAuth(data);
-            alert("Login successful!");
+            displayMessage("Login successful!");
             navigate('/');
         } else {
-            alert(data.error);
+            displayMessage(data.error);
         }
     };
 

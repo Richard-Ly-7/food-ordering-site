@@ -13,11 +13,19 @@ import Post from './pages/Post';
 import ShoppingCart from './pages/ShoppingCart';
 import Purchase from './pages/Purchase';
 import Profile from './pages/Profile';
+import Message from './components/Message';
 
 function App() {
     const [user, setUser] = useState(null);
     const [cartTotal, setCartTotal] = useState(0);
-    
+    const [message, setMessage] = useState("");
+    const [messageVisible, setMessageVisible] = useState(false);
+
+    const displayMessage = (messageText) => {
+        setMessageVisible(true);
+        setMessage(messageText);
+    }
+
     const handleLogin = (user) => {
         setUser(user);
     };
@@ -37,6 +45,7 @@ function App() {
         if(addToCart){
             const cartItem = {...dish, id: nanoid()};
             updatedCart = [...(user.shoppingCart || []), cartItem];
+            displayMessage("Dish added to cart!");
         }else{
             updatedCart = user.shoppingCart ? user.shoppingCart.filter(d => d.id !== dish.id) : [];
         }
@@ -57,6 +66,7 @@ function App() {
         });
         if(res.ok){
             setDishes(prev => ({...prev, dishes: dishes.filter((dish) => dish.id !== id)}));
+            displayMessage("Dish deleted!");
         }
     };
 
@@ -69,6 +79,7 @@ function App() {
         if(res.ok){
             const updatedDishes = dishes.map((dish) => dish.id === id ? updatedDish : dish);
             setDishes(prev => ({...prev, dishes: updatedDishes}));
+            displayMessage("Dish updated!");
         }
     };
 
@@ -90,17 +101,19 @@ function App() {
 
 return (
     <>
-        <Navbar user={user} onLogout={handleLogout} />
+        <Navbar user={user} onLogout={handleLogout} displayMessage={displayMessage} />
+
+        <Message message={message} messageVisible={messageVisible} setMessageVisible={setMessageVisible} />
 
         <Routes>
             <Route path="/" element={<Home updateCart={updateCart} user={user} />} />
             <Route path="/restaurants" element={<Restaurants />} />
             <Route path="/restaurantdishes" element={<RestaurantDishes updateCart={updateCart} deleteDish={deleteDish} updateDish={updateDish} user={user} />} />
-            <Route path="/login" element={<Login onAuth={handleLogin} />} />
-            <Route path="/register" element={<Register onAuth={handleLogin} />} />
-            <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-            <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} cartTotal={cartTotal} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-            <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal}  /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+            <Route path="/login" element={<Login onAuth={handleLogin} displayMessage={displayMessage} />} />
+            <Route path="/register" element={<Register onAuth={handleLogin} displayMessage={displayMessage} />} />
+            <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} displayMessage={displayMessage} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+            <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} cartTotal={cartTotal} displayMessage={displayMessage} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+            <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal} displayMessage={displayMessage} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
             <Route path="/profile" element={user ? (user.role === "buyer" ? <Profile user={user} /> : <Navigate to={`/restaurantDishes?restaurant=${user.restaurantId}`} />) : <Navigate to="/login" /> } />
         </Routes>
     </>
