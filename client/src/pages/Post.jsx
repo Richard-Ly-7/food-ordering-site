@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 export default function Post({ user, displayMessage }){
+    const navigate = useNavigate();
+    const api = import.meta.env.VITE_API_URL;
 
     const [fields, setFields] = useState({
         dishName: "",
@@ -24,11 +27,11 @@ export default function Post({ user, displayMessage }){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const res = await fetch(`http://localhost:4000/restaurants/findRestaurant/${user.email}`);
+        const res = await fetch(`${api}/restaurants/findRestaurant/${user.email}`);
         const restaurant = await res.json();
 
         if(res.ok) {
-            const dishRes = await fetch('http://localhost:4000/dishes', {
+            const dishRes = await fetch(`${api}/dishes`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({name: fields.dishName, price: fields.price, base64: fields.base64, restaurant: restaurant.name, restaurantId: restaurant.id}),
@@ -42,6 +45,7 @@ export default function Post({ user, displayMessage }){
             displayMessage(restaurant.error)
         }
 
+        navigate('/');
     };
 
     return (
@@ -65,7 +69,7 @@ export default function Post({ user, displayMessage }){
 
                         <Form.Group className="mb-5">
                             <Form.Label>Upload An Image</Form.Label>
-                            <Form.Control type="file" accept="image/jpg, image/jpeg, image/png" onChange={convertToBase64} />
+                            <Form.Control type="file" accept="image/jpg, image/jpeg, image/png, image/webp" onChange={convertToBase64} />
                         </Form.Group>
                         
                         <div className="d-flex justify-content-center">

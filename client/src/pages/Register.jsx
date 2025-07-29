@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 export default function Register({ onAuth, displayMessage }){
+    const api = import.meta.env.VITE_API_URL;
+
     const [fields, setFields] = useState({
         selectValue: "Buyer",
         displayName: "",
@@ -42,7 +44,7 @@ export default function Register({ onAuth, displayMessage }){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const res = await fetch(`http://localhost:4000/api/auth/signup`, {
+        const res = await fetch(`${api}/api/auth/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fields.selectValue === "Buyer" ? 

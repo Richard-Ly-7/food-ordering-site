@@ -9,6 +9,8 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner'; 
 
 export default function RestaurantDishes({ updateCart, deleteDish, updateDish, user }){
+    const api = import.meta.env.VITE_API_URL;
+    
     const [searchParams] = useSearchParams();
     const restaurantId = searchParams.get('restaurant');
 
@@ -20,7 +22,7 @@ export default function RestaurantDishes({ updateCart, deleteDish, updateDish, u
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/restaurants/${restaurantId}?page=${currentPage}&limit=${9}&searchQuery=${searchQuery}`)
+        fetch(`${api}/restaurants/${restaurantId}?page=${currentPage}&limit=${9}&searchQuery=${searchQuery}`)
             .then((res) => res.json())
             .then((data) => {
                 setRestaurantDishes(data); 

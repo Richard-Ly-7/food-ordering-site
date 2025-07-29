@@ -6,6 +6,8 @@ import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner'; 
 
 export default function Restaurants () {
+    const api = import.meta.env.VITE_API_URL;
+    
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +26,7 @@ export default function Restaurants () {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/restaurants?page=${currentPage}&limit=${5}&searchQuery=${searchQuery}`)
+        fetch(`${api}/restaurants?page=${currentPage}&limit=${5}&searchQuery=${searchQuery}`)
             .then((res) => res.json())
             .then((data) => {
                 setRestaurants(data.restaurants); 

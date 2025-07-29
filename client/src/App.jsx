@@ -20,6 +20,7 @@ function App() {
     const [cartTotal, setCartTotal] = useState(0);
     const [message, setMessage] = useState("");
     const [messageVisible, setMessageVisible] = useState(false);
+    const api = import.meta.env.VITE_API_URL;
 
     const displayMessage = (messageText) => {
         setMessageVisible(true);
@@ -31,7 +32,7 @@ function App() {
     };
 
     const handleLogout = async () => {
-        await fetch('http://localhost:4000/api/auth/logout', {
+        await fetch(`${api}/api/auth/logout`, {
             method: 'POST',
             credentials: 'include'
         });
@@ -52,7 +53,7 @@ function App() {
         
         setUser({...user, shoppingCart: updatedCart})
 
-        await fetch(`http://localhost:4000/shoppingcart/${user.id}`, {
+        await fetch(`${api}/shoppingcart/${user.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ shoppingCart: updatedCart }),
@@ -62,7 +63,7 @@ function App() {
     };
 
     const deleteDish = async (id, dishes, setDishes) => {
-        const res = await fetch(`http://localhost:4000/dishes/${id}`, {
+        const res = await fetch(`${api}/dishes/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -74,7 +75,7 @@ function App() {
     };
 
     const updateDish = async (id, updatedDish, dishes, setDishes) => {
-        const res = await fetch(`http://localhost:4000/dishes/${id}`, {
+        const res = await fetch(`${api}/dishes/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({updatedDish: updatedDish}),
@@ -89,7 +90,7 @@ function App() {
     };
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/auth/me', {
+        fetch(`${api}/api/auth/me`, {
           credentials: 'include'
         })
           .then(res => res.ok ? res.json() : null)

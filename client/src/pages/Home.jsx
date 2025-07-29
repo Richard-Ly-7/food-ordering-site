@@ -13,6 +13,8 @@ export default function Home({ updateCart, user }){
     const [dishes, setDishes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const api = import.meta.env.VITE_API_URL;
+
     const decrementPage = () => {
         if(currentPage > 1){
             setCurrentPage(currentPage - 1);  
@@ -24,7 +26,7 @@ export default function Home({ updateCart, user }){
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/dishes?page=${currentPage}&limit=${9}&searchQuery=${searchQuery}`)
+        fetch(`${api}/dishes?page=${currentPage}&limit=${9}&searchQuery=${searchQuery}`)
             .then((res) => res.json())
             .then((data) => {
                 setDishes(data.dishes); 

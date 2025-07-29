@@ -82,7 +82,7 @@ export default function Dish({ dish, dishes, setDishes, updateCart, deleteDish, 
                         <div className="text-end pe-2">
                             <p className="h2 mb-0">{dish.name}</p>
                             <p className="h6">{dish.restaurant}</p>
-                            <p>${dish.price}</p>
+                            <p>${dish.price.toFixed(2)}</p>
                         </div>
                     </div>
                 </>

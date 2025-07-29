@@ -13,7 +13,7 @@ const shoppingCartRoutes = require('./routes/shoppingcart.js');
 const app = express();
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.APP_ORIGIN,
     credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));

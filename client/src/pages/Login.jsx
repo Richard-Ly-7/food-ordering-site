@@ -10,11 +10,12 @@ export default function Login({ onAuth, displayMessage }){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const api = import.meta.env.VITE_API_URL;
     
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/auth/login', {
+        const res = await fetch(`${api}/api/auth/login`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

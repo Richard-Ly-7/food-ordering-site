@@ -21,7 +21,7 @@ export default function Restaurant({restaurant}){
                 </svg>
             }
             
-            <div className="d-flex flex-column justify-content-center my-auto me-5 text-end">
+            <div className="d-flex flex-column justify-content-center my-auto ms-3 me-5 text-end">
                 <div>
                     <p className="h2 mb-0">{restaurant.name}</p>
                     <p className="h6">{restaurant.address}</p>
