@@ -15,7 +15,7 @@ router.post('/signup', async (req, res) => {
     if (existingUser)
         return res.status(409).json({ error: 'Email already taken' });
     const passwordHash = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, passwordHash, role, address });
+    const newUser = new User({ username, email, passwordHash, role, address, base64 });
     await newUser.save();
 
     if(role === "restaurant"){
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Lax',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         .json({ ...user._doc, id: user._id });
