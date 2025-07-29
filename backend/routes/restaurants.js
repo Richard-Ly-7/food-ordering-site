@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 
         const startIndex = limit * (page - 1);
 
-        const restaurants = await Restaurant.find();
+        const restaurants = await Restaurant.find().sort({createdAt: -1});
 
         const filteredRestaurants = searchQuery ? 
             restaurants.filter((restaurant) => 
@@ -49,7 +49,7 @@ router.get('/:id', async (req, res) => {
         const startIndex = limit * (page - 1);
 
         const restaurant = await Restaurant.findById(req.params.id);
-        const dishes = await Dish.find({restaurantId: req.params.id})
+        const dishes = await Dish.find({restaurantId: req.params.id}).sort({createdAt: -1});
         const filteredDishes = searchQuery ? 
             dishes.filter((dish) => 
                 dish.name.toLowerCase().includes(searchQuery.toLowerCase())

@@ -6,7 +6,7 @@ const dishSchema = new mongoose.Schema({
     restaurantId: { type: mongoose.Schema.Types.ObjectId, required: true },
     price: { type: Number, required: true },
     base64: { type: String }
-});
+},  { timestamps: true });
 
 const Dish = mongoose.model('Dish', dishSchema);
 

@@ -21,7 +21,8 @@ router.get('/', async (req, res) => {
 
         const startIndex = limit * (page - 1);
 
-        const dishes = await Dish.find();
+        const dishes = await Dish.find().sort({createdAt: -1});
+        console.log(dishes);
         const filteredDishes = searchQuery ? 
             dishes.filter((dish) => 
                 dish.name.toLowerCase().includes(searchQuery.toLowerCase())

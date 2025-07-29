@@ -6,7 +6,7 @@ const restaurantSchema = new mongoose.Schema({
     description: { type: String },
     base64: { type: String },
     userEmail: { type: String, required: true }
-});
+}, { timestamps: true });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
