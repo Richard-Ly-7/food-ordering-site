@@ -27,6 +27,6 @@ mongoose
     .then(() => console.log("Connected to MongoDB Atlas"))
     .catch((err) => 
         console.error("MongoDB connection error:", err));
-app.listen(4000, () => {
-    console.log('REST API running at http://localhost:4000');
+app.listen(process.env.PORT || 4000, () => {
+    console.log(`REST API running at http://localhost:${process.env.PORT}`);
 })
