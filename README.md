@@ -11,8 +11,8 @@ JWT_SECRET=String to sign JWT tokens with
 APP_ORIGIN=Where you are hosting your client (http://localhost:5173)
 PORT=Port that the server is listening in on (4000)
 
-Link to live frontend: 
-Link to live backend: 
+Link to live frontend: https://food-ordering-site-odcwtvlaq-richard-lys-projects.vercel.app
+Link to live backend: https://food-ordering-site-j5bk.onrender.com
 
 API routes:
 POST /api/auth/signup - Create a new user, posting a restaurant if the user has the restaurant role
