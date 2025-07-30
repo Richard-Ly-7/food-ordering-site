@@ -18,7 +18,7 @@ export default function CartItem({cartItem, updateCart}){
                     <div className="d-flex flex-column justify-content-center align-items-end pe-3 text-end">
                         <p className="h2 mb-0">{cartItem.name}</p>
                         <p className="h6">{cartItem.restaurant}</p>
-                        <p>${cartItem.price}</p>
+                        <p>${cartItem.price.toFixed(2)}</p>
                     </div>
                 </Col>
             </Row>

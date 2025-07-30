@@ -7,7 +7,7 @@ export default function Dish({ dish, dishes, setDishes, updateCart, deleteDish, 
     const [isEditing, setIsEditing] = useState(false);
     const [newDish, setNewDish] = useState({
         name: "",
-        price: undefined,
+        price: "",
         base64: undefined
     });
 
@@ -44,7 +44,7 @@ export default function Dish({ dish, dishes, setDishes, updateCart, deleteDish, 
 
                     <Form.Group className="mb-2">
                     <Form.Label>New Price</Form.Label>
-                    <Form.Control type="number" value={newDish.price} onChange={(e) => setNewDish({...newDish, price: e.target.value})} />
+                    <Form.Control type="number" value={newDish.price} onChange={(e) => setNewDish({...newDish, price: parseFloat(e.target.value)})} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">

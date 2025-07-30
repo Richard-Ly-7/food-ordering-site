@@ -5,12 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export default function Purchase({cartTotal, displayMessage}){
+export default function Purchase({cartTotal, displayMessage, emptyCart}){
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         displayMessage("Your order is on the way!");
+        emptyCart();
         navigate(`/`);
     }
 

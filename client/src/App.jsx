@@ -25,6 +25,9 @@ function App() {
     const displayMessage = (messageText) => {
         setMessageVisible(true);
         setMessage(messageText);
+        setTimeout(() => {
+            setMessageVisible(false);
+        }, 3000);
     }
 
     const handleLogin = (user) => {
@@ -61,6 +64,17 @@ function App() {
         });
 
     };
+
+    const emptyCart = async () => {
+        setUser({...user, shoppingCart: []})
+
+        await fetch(`${api}/shoppingcart/${user.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shoppingCart: [] }),
+            credentials: 'include'
+        });
+    }
 
     const deleteDish = async (id, dishes, setDishes) => {
         const res = await fetch(`${api}/dishes/${id}`, {
@@ -119,7 +133,7 @@ return (
             <Route path="/register" element={<Register onAuth={handleLogin} displayMessage={displayMessage} />} />
             <Route path="/post" element={user ? (user.role === "restaurant" ? <Post user={user} displayMessage={displayMessage} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
             <Route path="/shoppingcart" element={user ? (user.role === "buyer" ? <ShoppingCart user={user} updateCart={updateCart} cartTotal={cartTotal} displayMessage={displayMessage} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
-            <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal} displayMessage={displayMessage} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
+            <Route path="/purchase" element={user ? (user.role === "buyer" && user?.shoppingCart?.length > 0 ? <Purchase cartTotal={cartTotal} displayMessage={displayMessage} emptyCart={emptyCart} /> : <Navigate to="/" />) : <Navigate to="/login" /> } />
             <Route path="/profile" element={user ? (user.role === "buyer" ? <Profile user={user} /> : <Navigate to={`/restaurantDishes?restaurant=${user.restaurantId}`} />) : <Navigate to="/login" /> } />
         </Routes>
     </>

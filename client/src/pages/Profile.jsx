@@ -27,7 +27,7 @@ function Profile({ user }) {
                         <Container>
                             <p className="h5">Display Name: {user.username}</p>
                             <p className="h5">Email: {user.email}</p>
-                            <p className="h5">Delivery Address {user.address}</p>
+                            <p className="h5">Delivery Address: {user.address}</p>
                             <p className="h5"><strong>Account Created:</strong> {new Date(user.createdAt).toLocaleString()}</p>
                         </Container>
                     </Col>
